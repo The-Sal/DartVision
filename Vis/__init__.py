@@ -65,6 +65,7 @@ if __name__ == '__main__':
         # DO NOT USE THIS FUNCTION, it is only for testing
         x = str(x)
         y = str(y)
+        # VM path to cliclick
         clicker = '/Users/Sal/.Dart2-Install/cliclick'
         system.command([clicker, 'c:' + x + ',' + y], waitUntilFinished=True)
 
