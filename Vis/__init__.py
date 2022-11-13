@@ -1,5 +1,7 @@
 """Dart Vision Library"""
 import cv2
+import time
+import importlib
 from utils2 import system  # install with pip from github.com/the-sal/utils2 using 'git+' prefix
 def __guaranteeImport(module):
     """This function is used to guarantee that a module is imported from within
@@ -10,7 +12,7 @@ def __guaranteeImport(module):
         mod = __import__(module)
     except ImportError:
         # When imported as a library, this will work
-        mod = __import__('.{}'.format(module), fromlist=['*'])  # act as from . import module
+        mod = importlib.import_module('.' + module, __name__)
 
     return mod
 
@@ -88,4 +90,4 @@ if __name__ == '__main__':
 
     for i in images:
         _tester(i)
-        exit(0)
+        time.sleep(1)
