@@ -28,6 +28,13 @@ class ScreenShot:
         system.paths.remove(self._file_name)
 
 
+class VisionError(Exception):
+    pass
+
+class UnableToFindImage(VisionError):
+    pass
+
+
 if __name__ == '__main__':
     with ScreenShot() as ss:
         print('Screenshot saved to: ' + ss)

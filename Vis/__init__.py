@@ -16,19 +16,20 @@ def __guaranteeImport(module):
 
     return mod
 
-_util = __guaranteeImport('_util')
+util = __guaranteeImport('_util')
 
 
 class ImageCords:
     """Image Cords
     This class is used to find the location of an image on the screen."""
 
-    def __init__(self, image):
+    def __init__(self, image, confidence=0.8):
+        self._confidence = confidence
         self._image = cv2.imread(image)
         self._cords = None
 
     def _find_image(self):
-        screen_shot = _util.ScreenShot()
+        screen_shot = util.ScreenShot()
         with screen_shot as ss:
             screen = cv2.imread(ss)
             result = cv2.matchTemplate(screen, self._image, cv2.TM_CCOEFF_NORMED)
@@ -50,8 +51,19 @@ class ImageCords:
 
 
             multiplier = 0.50472069236
-            self._cords = ((max_loc[0] * multiplier).__int__(), (max_loc[1] * multiplier).__int__())
-            self._cords = (self._cords[0] + 1, self._cords[1] + 1)
+            # check the confidence
+            if max_val >= self._confidence:
+                self._cords = (
+                    int(max_loc[0] * multiplier) + 1,
+                    int(max_loc[1] * multiplier) + 1
+                )
+            else:
+                raise util.UnableToFindImage(
+                    'UnableToFindImage: Unable to find image with confidence of ' + self._confidence.__str__()
+                )
+                # self._cords = ((max_loc[0] * multiplier).__int__(), (max_loc[1] * multiplier).__int__())
+                # self._cords = (self._cords[0] + 1, self._cords[1] + 1)
+
 
 
 
@@ -85,9 +97,11 @@ if __name__ == '__main__':
         'sample/apple.png',
         'sample/control center.png',
         'sample/green circle.png',
-        'sample/finder.png'
     ]
 
     for i in images:
-        _tester(i)
-        time.sleep(1)
+        try:
+            _tester(i)
+            time.sleep(1)
+        except util.UnableToFindImage as e:
+            print('Unable to find image: ' + i)
