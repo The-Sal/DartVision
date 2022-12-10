@@ -28,6 +28,7 @@ class ScreenShot:
         system.paths.remove(self._file_name)
 
 
+
 class VisionError(Exception):
     pass
 
