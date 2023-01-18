@@ -2,6 +2,7 @@
 import cv2
 import time
 import importlib
+from .ocr import *
 from utils2 import system  # install with pip from github.com/the-sal/utils2 using 'git+' prefix
 def __guaranteeImport(module):
     """This function is used to guarantee that a module is imported from within
