@@ -36,6 +36,10 @@ class UnableToFindImage(VisionError):
     pass
 
 
+class PythonBinaryError(VisionError):
+    pass
+
+
 if __name__ == '__main__':
     with ScreenShot() as ss:
         print('Screenshot saved to: ' + ss)
